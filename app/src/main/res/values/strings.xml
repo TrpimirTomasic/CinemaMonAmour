@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Cinema Mon Amour</string>
+
+    <string name="now_playing_movies">Trenutno u kinu</string>
+    <string name="favorite_movies">Favoriti</string>
+
+    <string name="dialog_title">Ocjenite film</string>
+    <string name="dialog_ok">Spremi</string>
+    <string name="dialog_cancel">Zatvori</string>
+    <string name="dialog_warning">Vaša ocjena mora biti između 1 i 10!</string>
+    <string name="dialog_warning2">Morate ocjeniti film!</string>
+
+    <string name="icon_movies">Kino</string>
+    <string name="icon_fav">Favoriti</string>
+    <string name="icon_share">Podjeli</string>
+
+    <string name="msg_add">\u0020 je dodan u favorite!</string>
+    <string name="msg_del">Film uspješno obrisan!</string>
+
+    <string name="error">Pogreška!</string>
+    <string name="connection_error">Provjerite internet konekciju!</string>
+
+    <string name="share_type">text/plain</string>
+    <string name="share_body">Test test2 test3</string>
+    <string name="share_title">Share using:</string>
+
+    <string name="genre">Žanrovi</string>
+
+    <string name="rating_10">/\u0020 10</string>
+
+
+
+
+
+
+
+</resources>
