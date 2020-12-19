@@ -1,7 +1,6 @@
 package com.example.trpimir.cinemamonamour.activities;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
     private TextView movieOverview;
     private ImageView moviePoster;
     private ImageView movieBackdrop;
-    private FloatingActionButton fab;
     private Float userRatingValue;
     private String userRatingString;
     private ActionBar toolbar;
@@ -54,7 +52,6 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
         movieOverview = findViewById(R.id.tv_overview);
         moviePoster = findViewById(R.id.iv_poster);
         movieBackdrop = findViewById(R.id.iv_backdrop);
-        fab = findViewById(R.id.fab);
         toolbar = getSupportActionBar();
 
 
@@ -62,20 +59,11 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
             movieId = getIntent().getIntExtra(MOVIE_ID,movieId);
             Call<Movie>movieDetails = RetrofitManager.getInstance().service().getMovieDetails(movieId,API_KEY);
             movieDetails.enqueue(MovieDetail.this);
-            fab.setImageResource(R.drawable.ic_action_favorite_border);
         }
 
         else{
             favMovieId = getIntent().getIntExtra(MOVIE_ID,favMovieId);
             final FavMovie favMovie = new FavMovie();
-            fab.setImageResource(R.drawable.ic_action_favorite);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    favMovie.setId(favMovieId);
-                    Toast.makeText(MovieDetail.this, getString(R.string.msg_del), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 
