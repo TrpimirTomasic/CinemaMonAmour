@@ -1,12 +1,18 @@
 package com.example.trpimir.cinemamonamour.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.trpimir.cinemamonamour.R;
+import com.example.trpimir.cinemamonamour.database.DatabaseClient;
 import com.example.trpimir.cinemamonamour.models.FavMovie;
 import com.example.trpimir.cinemamonamour.models.Movie;
 import com.example.trpimir.cinemamonamour.network.RetrofitManager;
@@ -38,6 +45,7 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
     private TextView movieOverview;
     private ImageView moviePoster;
     private ImageView movieBackdrop;
+    private FloatingActionButton fab;
     private Float userRatingValue;
     private String userRatingString;
     private ActionBar toolbar;
@@ -52,6 +60,7 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
         movieOverview = findViewById(R.id.tv_overview);
         moviePoster = findViewById(R.id.iv_poster);
         movieBackdrop = findViewById(R.id.iv_backdrop);
+        fab = findViewById(R.id.fab);
         toolbar = getSupportActionBar();
 
 
@@ -59,11 +68,22 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
             movieId = getIntent().getIntExtra(MOVIE_ID,movieId);
             Call<Movie>movieDetails = RetrofitManager.getInstance().service().getMovieDetails(movieId,API_KEY);
             movieDetails.enqueue(MovieDetail.this);
+            fab.setImageResource(R.drawable.ic_action_favorite_border);
         }
 
         else{
             favMovieId = getIntent().getIntExtra(MOVIE_ID,favMovieId);
             final FavMovie favMovie = new FavMovie();
+            fab.setImageResource(R.drawable.ic_action_favorite);
+            getMovieByID(favMovieId);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favMovie.setId(favMovieId);
+                    deleteMovie(favMovie);
+                    Toast.makeText(MovieDetail.this, getString(R.string.msg_del), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -94,7 +114,6 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
             movieDate.setText(movie.getReleaseDate());
             movieRating.setText(movie.getVoteAverage());
             movieOverview.setText(movie.getOverview());
-            toolbar.setTitle(movie.getTitle());
             Glide.with(MovieDetail.this)
                     .load(IMAGE_BASE_URL + movie.getBackdropPath())
                     .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
@@ -103,6 +122,46 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
                     .load(IMAGE_BASE_URL + movie.getPosterPath())
                     .apply(RequestOptions.placeholderOf(R.drawable.placeholder))
                     .into(moviePoster);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(MovieDetail.this);
+                alert.setTitle(getString(R.string.dialog_title));
+                // Set an EditText view to get user input
+                final EditText input = new EditText(MovieDetail.this);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                alert.setView(input);
+                alert.setPositiveButton(getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        userRatingString = input.getText().toString();
+
+                        if(!userRatingString.isEmpty()){
+                            userRatingValue=Float.parseFloat(userRatingString);
+
+                            if(userRatingValue<=10 && userRatingValue>=0){
+                                saveMovie(movie);
+                                Toast.makeText(MovieDetail.this, movie.getTitle() + getString(R.string.msg_add), Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(MovieDetail.this, getString(R.string.dialog_warning), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        else{
+                            Toast.makeText(MovieDetail.this, getString(R.string.dialog_warning2), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                alert.setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
+                }
+            });
         }
         else{
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
@@ -115,4 +174,79 @@ public class MovieDetail extends AppCompatActivity implements Callback<Movie> {
         Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show();
     }
 
+    private void saveMovie(Movie movie){
+        final String Title = movie.getTitle();
+        final String Overview = movie.getOverview();
+        final Float Rating = userRatingValue;
+        final String ReleaseDate = movie.getReleaseDate();
+        final String PosterPath = movie.getPosterPath();
+        final String BackdropPath = movie.getBackdropPath();
+
+        class SaveTask extends AsyncTask<Void, Void, Void>{
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                FavMovie favMovie = new FavMovie();
+                favMovie.setTitle(Title);
+                favMovie.setOverview(Overview);
+                favMovie.setUserRating(Rating);
+                favMovie.setReleaseDate(ReleaseDate);
+                favMovie.setPosterPath(PosterPath);
+                favMovie.setBackdropPath(BackdropPath);
+                DatabaseClient.getInstance(getApplicationContext()).getMovieDatabase()
+                        .favMovieDao()
+                        .insertFavoriteMovie(favMovie);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+            }
+        }
+        SaveTask st = new SaveTask();
+        st.execute();
+    }
+
+
+    private FavMovie getMovieByID(int id){
+        final FavMovie favMovies = DatabaseClient
+                .getInstance(this.getApplicationContext())
+                .getMovieDatabase()
+                .favMovieDao()
+                .loadMovieById(id);
+        movieTitle.setText(favMovies.getTitle());
+        movieOverview.setText(favMovies.getOverview());
+        movieRating.setText(String.valueOf(favMovies.getUserRating()));
+        Glide.with(MovieDetail.this)
+                .load(IMAGE_BASE_URL + favMovies.getBackdropPath())
+                .apply(RequestOptions.placeholderOf(R.color.colorPrimary))
+                .into(movieBackdrop);
+        Glide.with(MovieDetail.this)
+                .load(IMAGE_BASE_URL + favMovies.getPosterPath())
+                .apply(RequestOptions.placeholderOf(R.drawable.placeholder))
+                .into(moviePoster);
+        return favMovies;
+    }
+
+    private void deleteMovie(final FavMovie favMovie){
+        class DM extends AsyncTask<Void, Void, Void>{
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getApplicationContext()).getMovieDatabase()
+                        .favMovieDao()
+                        .deleteFavoriteMovie(favMovie);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+            }
+        }
+        DM dm = new DM();
+        dm.execute();
+    }
 }

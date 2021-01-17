@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.MovieDetail">
+    tools:context=".activities.MovieDetail"
+    android:background="@color/colorPrimaryDark">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -55,72 +56,131 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-            android:id="@+id/iv_poster"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginTop="20dp"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorWhite"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+                app:layout_constraintBottom_toTopOf="@+id/iv_poster"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Naslov"/>
+
+            <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="120dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
+
+            <TextView
+                android:id="@+id/item_movie_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="12dp"
+                android:text="Datum izlaska: "
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_release_date"
                 app:layout_constraintStart_toEndOf="@+id/iv_poster"
-                app:layout_constraintTop_toTopOf="@+id/iv_poster" />
+                app:layout_constraintTop_toTopOf="@+id/iv_poster"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBottom_toTopOf="@+id/item_movie_rate"
+                android:layout_marginTop="25dp"/>
 
             <TextView
                 android:id="@+id/tv_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+                android:layout_marginEnd="6dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/item_movie_date"
+                app:layout_constraintTop_toTopOf="@+id/item_movie_date"
+                android:textColor="@color/colorWhite"/>
+
+            <TextView
+                android:id="@+id/item_movie_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="12dp"
+                android:text="Ocjena: "
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_rating"
+                app:layout_constraintStart_toEndOf="@+id/iv_poster"
+                app:layout_constraintTop_toBottomOf="@+id/item_movie_date"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="15dp"/>
 
             <TextView
                 android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:layout_constraintRight_toLeftOf="@id/tv_10_rating"
-                app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+                app:layout_constraintStart_toEndOf="@+id/item_movie_rate"
+                app:layout_constraintTop_toTopOf="@+id/item_movie_rate"
+                android:textColor="@color/colorWhite"/>
 
             <TextView
                 android:id="@+id/tv_10_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="6dp"
+                android:textSize="18sp"
                 app:layout_constraintLeft_toRightOf="@id/tv_rating"
-                app:layout_constraintTop_toBottomOf="@+id/iv_poster"
-                android:text="@string/rating_10"/>
+                app:layout_constraintTop_toTopOf="@+id/item_movie_rate"
+                android:text="@string/rating_10"
+                android:textColor="@color/colorWhite"/>
 
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/ic_action_favorite_border"
+                app:layout_constraintTop_toBottomOf="@+id/item_movie_rate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_poster"/>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorWhite"
+                app:layout_constraintBottom_toTopOf="@+id/tv_overview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
             <TextView
                 android:id="@+id/tv_overview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="12dp"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_poster"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="Text"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

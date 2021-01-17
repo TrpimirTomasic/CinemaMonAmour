@@ -54,7 +54,6 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavV
         TextView rating;
         ImageView poster;
         TextView releaseDate;
-        TextView genre;
         FavMovie favMovie;
 
 
@@ -64,7 +63,6 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavV
             rating = itemView.findViewById(R.id.item_movie_rating);
             releaseDate = itemView.findViewById(R.id.item_movie_release_date);
             poster = itemView.findViewById(R.id.item_movie_poster);
-            genre = itemView.findViewById(R.id.item_movie_genre);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,7 +77,6 @@ public class FavMoviesAdapter extends RecyclerView.Adapter<FavMoviesAdapter.FavV
             title.setText(favMovie.getTitle());
             rating.setText(String.valueOf(favMovie.getUserRating()));
             releaseDate.setText(favMovie.getReleaseDate());
-            genre.setText(R.string.genre);
             Glide.with(itemView)
                     .load(IMAGE_URL + favMovie.getPosterPath())
                     .apply(RequestOptions.placeholderOf(R.drawable.placeholder))

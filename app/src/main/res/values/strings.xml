@@ -4,21 +4,21 @@
     <string name="now_playing_movies">Trenutno u kinu</string>
     <string name="favorite_movies">Favoriti</string>
 
-    <string name="dialog_title">Ocjenite film</string>
+    <string name="dialog_title">Ocijenite film</string>
     <string name="dialog_ok">Spremi</string>
     <string name="dialog_cancel">Zatvori</string>
-    <string name="dialog_warning">Vaša ocjena mora biti između 1 i 10!</string>
-    <string name="dialog_warning2">Morate ocjeniti film!</string>
+    <string name="dialog_warning">Vaša ocjena treba biti između 0 i 10!</string>
+    <string name="dialog_warning2">Trebate ocijeniti film kako biste ga dodali!</string>
 
-    <string name="icon_movies">Kino</string>
+    <string name="icon_movies">Filmovi</string>
     <string name="icon_fav">Favoriti</string>
-    <string name="icon_share">Podjeli</string>
+    <string name="icon_share">Dijeli</string>
 
-    <string name="msg_add">\u0020 je dodan u favorite!</string>
-    <string name="msg_del">Film uspješno obrisan!</string>
+    <string name="msg_add">\u0020 je dodan u vaše favorite!</string>
+    <string name="msg_del">Film uspješno uklonjen iz favorita!</string>
 
     <string name="error">Pogreška!</string>
-    <string name="connection_error">Provjerite internet konekciju!</string>
+    <string name="connection_error">Provjerite da li ste povezani na internet!</string>
 
     <string name="share_type">text/plain</string>
     <string name="share_body">Test test2 test3</string>

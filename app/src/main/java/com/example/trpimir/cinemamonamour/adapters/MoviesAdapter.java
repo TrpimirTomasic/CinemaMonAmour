@@ -49,7 +49,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         TextView rating;
         ImageView poster;
         TextView releaseDate;
-        TextView genre;
         Movie movie;
 
         public MovieViewHolder(View itemView) {
@@ -58,7 +57,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             rating = itemView.findViewById(R.id.item_movie_rating);
             releaseDate = itemView.findViewById(R.id.item_movie_release_date);
             poster = itemView.findViewById(R.id.item_movie_poster);
-            genre = itemView.findViewById(R.id.item_movie_genre);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
@@ -72,7 +70,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             releaseDate.setText(movie.getReleaseDate());
             title.setText(movie.getTitle());
             rating.setText(movie.getVoteAverage());
-            genre.setText(R.string.genre);
             Glide.with(itemView)
                     .load(IMAGE_URL + movie.getPosterPath())
                     .apply(RequestOptions.placeholderOf(R.drawable.placeholder))
